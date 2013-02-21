@@ -3,14 +3,12 @@ require 'pony'
 module Rake
   mattr_accessor :email_from, :email_to
 
-  class Application
-    def standard_exception_handling
-      begin
-        yield
-      rescue Exception => e
-        handle_exception(e)
-        exit(false)
-      end
+  class Task
+    alias :orig_execute :execute
+    def execute(args=nil)
+      orig_execute(args)
+    rescue Exception => exception
+      handle_exception(exception)
     end
 
     def handle_exception(exception)
@@ -27,19 +25,18 @@ module Rake
         end
       end
 
-      $stderr.puts "#{name} aborted!"
-      $stderr.puts exception.message
-      $stderr.puts exception.backtrace.join("\n")
+      $stderr.puts
+      $stderr.puts
 
       # Send email
-      subject = "Rake exception - #{exception.message}"
-      body = "#{exception.message}\n\n#{exception.backtrace.join("\n")}"
+      $stderr.puts subject = "Rake exception - #{exception.message}"
+      $stderr.puts body = "#{exception.message}\n\n#{exception.backtrace.join("\n")}"
 
-      Pony.mail(:to => Rake.email_from, :from => Rake.email_to, :subject => subject, :body => body)
+      Pony.mail(:from => Rake.email_from, :to => Rake.email_to, :subject => subject, :body => body)
+      $stderr.puts "Exception details sent to #{Rake.email_to}"
 
       $stderr.puts
       $stderr.puts
-      $stderr.puts "Exception details sent to #{EMAIL_TO}"
     end
   end
 end
