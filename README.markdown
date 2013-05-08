@@ -1,8 +1,7 @@
-Rake Notifier send a notification to your email address whenever a Rake task in your application fails.
-==========================================
+### Rake Notifier send a notification to your email address whenever a Rake task in your application fails.
 
 
-## Usage
+#### Usage
 1. Add to Gemfile
 ```ruby
 gem 'rake_notifier'
@@ -17,4 +16,4 @@ Rake.email_from  = 'your@email.com'
 Rake.email_to    = 'another@email.com'
 ```
 
-## And then you're ready to go.
+#### And then you're ready to go.
