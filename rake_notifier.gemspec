@@ -10,5 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/mvj3/rake_notifier'
   s.licenses    = ["MIT"]
 
+  s.add_dependency "rake"
   s.add_dependency "pony"
+  s.add_dependency "only_one_rake"
 end

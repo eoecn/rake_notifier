@@ -1,4 +1,8 @@
 require 'pony'
+require 'rake/task'
+
+# load only_one_rake.gem first, because it'll overwrite Rake::Task#execute directly
+require 'only_one_rake'
 
 module Rake
   mattr_accessor :email_from, :email_to
@@ -26,16 +30,11 @@ module Rake
       end
 
       $stderr.puts
-      $stderr.puts
-
-      # Send email
       $stderr.puts subject = "Rake exception - #{exception.message}"
       $stderr.puts body = "#{exception.message}\n\n#{exception.backtrace.join("\n")}"
-
       Pony.mail(:from => Rake.email_from, :to => Rake.email_to, :subject => subject, :body => body)
-      $stderr.puts "Exception details sent to #{Rake.email_to}"
-
       $stderr.puts
+      $stderr.puts "Exception details sent to #{Rake.email_to}"
       $stderr.puts
     end
   end
